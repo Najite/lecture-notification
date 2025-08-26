@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { useAuth } from './hooks/useAuth';
 import { Layout } from './components/Layout';
 import { AuthForm } from './components/AuthForm';
+import { Dashboard } from './pages/Dashboard';
 
 function App() {
   const { user, loading } = useAuth();
