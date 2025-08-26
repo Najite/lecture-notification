@@ -8,12 +8,14 @@ export interface User {
 
 export interface Course {
   id: string;
-  name: string;
-  code: string;
+  title: string;
+  course_code: string;
   description: string;
   lecturer_id: string;
-  lecturer?: User;
+  color: string;
+  is_active: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 export interface Lecture {
@@ -21,29 +23,19 @@ export interface Lecture {
   title: string;
   description: string;
   course_id: string;
-  course?: Course;
-  lecturer_id: string;
-  lecturer?: User;
   scheduled_at: string;
   duration_minutes: number;
-  location: string;
+  location: string | null;
+  meeting_url: string | null;
   is_cancelled: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 export interface Enrollment {
   id: string;
   student_id: string;
   course_id: string;
-  student?: User;
-  course?: Course;
   enrolled_at: string;
-}
-
-export interface NotificationSettings {
-  id: string;
-  user_id: string;
-  email_enabled: boolean;
-  reminder_hours_before: number;
-  created_at: string;
+  is_active: boolean;
 }

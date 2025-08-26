@@ -35,7 +35,7 @@ export function useAuth() {
   const fetchUserProfile = async (authUser: SupabaseUser) => {
     try {
       const { data, error } = await supabase
-        .from('users')
+        .from('profiles')
         .select('*')
         .eq('id', authUser.id)
         .single();
@@ -67,7 +67,7 @@ export function useAuth() {
 
     if (data.user) {
       const { error: profileError } = await supabase
-        .from('users')
+        .from('profiles')
         .insert({
           id: data.user.id,
           email,

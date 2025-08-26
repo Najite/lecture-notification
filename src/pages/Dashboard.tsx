@@ -45,24 +45,24 @@ export function Dashboard() {
     const { data: enrollments } = await supabase
       .from('enrollments')
       .select(`
-        course:courses(
+        course_id,
+        courses(
           id,
-          name,
-          code,
-          lecturer:users(full_name)
+          title,
+          course_code,
+          lecturer:profiles(full_name)
         )
       `)
       .eq('student_id', user?.id);
 
-    const courseIds = enrollments?.map(e => e.course.id) || [];
+    const courseIds = enrollments?.map(e => e.course_id) || [];
 
     // Get upcoming lectures for enrolled courses
     const { data: lectures } = await supabase
       .from('lectures')
       .select(`
         *,
-        course:courses(name, code),
-        lecturer:users(full_name)
+        courses(title, course_code)
       `)
       .in('course_id', courseIds)
       .gte('scheduled_at', new Date().toISOString())
@@ -98,7 +98,7 @@ export function Dashboard() {
       .from('lectures')
       .select(`
         *,
-        course:courses(name, code)
+        courses(title, course_code)
       `)
       .in('course_id', courseIds)
       .gte('scheduled_at', new Date().toISOString())
@@ -137,8 +137,7 @@ export function Dashboard() {
       .from('lectures')
       .select(`
         *,
-        course:courses(name, code),
-        lecturer:users(full_name)
+        courses(title, course_code)
       `)
       .gte('scheduled_at', new Date().toISOString())
       .eq('is_cancelled', false)
@@ -147,7 +146,7 @@ export function Dashboard() {
 
     // Get total students
     const { data: students } = await supabase
-      .from('users')
+      .from('profiles')
       .select('id')
       .eq('role', 'student');
 
@@ -278,7 +277,7 @@ export function Dashboard() {
                     {lecture.title}
                   </h3>
                   <p className="text-sm text-gray-600 mb-1">
-                    {lecture.course?.name} ({lecture.course?.code})
+                    {lecture.courses?.title} ({lecture.courses?.course_code})
                   </p>
                   <div className="flex items-center space-x-4 text-sm text-gray-500">
                     <div className="flex items-center space-x-1">
